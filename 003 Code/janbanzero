@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - 80:80
+    environment:
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=janbanzero
+      - KEYCLOAK_CLIENT_ID=frontend
+      - BACKEND_BASE_PATH=http://backend:9000
+    depends_on:
+      - keycloak
+      - backend
+
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - 9000:9000
+    environment:
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=janbanzero
+    depends_on:
+      - keycloak
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:18.0.1-legacy
+    container_name: keycloak
+    ports:
+      - 8080:8080
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_VENDOR=MYSQL
+      - DB_ADDR=mysql
+      - DB_DATABASE=keycloak
+      - DB_USER=keycloak
+      - DB_PASSWORD=keycloak
+      #- KEYCLOAK_IMPORT=/tmp/realm-test.json
+    depends_on:
+      - mysql
+    
+  mysql:
+      image: mysql:5.7
+      volumes:
+        - mysql_data:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: keycloak
+        MYSQL_USER: keycloak
+        MYSQL_PASSWORD: keycloak
