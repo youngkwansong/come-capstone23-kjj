@@ -9,7 +9,7 @@ services:
 #      - 80:80
 #    environment:
 #      - KEYCLOAK_URL=http://keycloak:8080
-#      - KEYCLOAK_REALM=janbanzero
+#      - KEYCLOAK_REALM=zanbanzero
 #      - KEYCLOAK_CLIENT_ID=frontend
 #      - BACKEND_BASE_PATH=http://backend:9000
 #    depends_on:
@@ -23,7 +23,7 @@ services:
       - 9000:9000
     environment:
       - KEYCLOAK_URL=http://keycloak:8080
-      - KEYCLOAK_REALM=janbanzero
+      - KEYCLOAK_REALM=zanbanzero
     depends_on:
       - keycloak
 
